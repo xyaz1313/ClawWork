@@ -38,6 +38,7 @@ export function globalSearch(db: Database.Database, query: string): SearchResult
 
   const ftsQuery = q.replace(/[^\w\u4e00-\u9fff]/g, ' ').trim() + '*';
   if (ftsQuery === '*') return [];
+  if (ftsQuery.length < 3) return [];
 
   const stmt = db.prepare(SEARCH_SQL);
   const rows = stmt.all(ftsQuery, ftsQuery, ftsQuery) as Array<{
@@ -87,6 +88,7 @@ export function searchArtifacts(db: Database.Database, query: string): ArtifactS
   if (!q) return [];
   const ftsQuery = q.replace(/[^\w\u4e00-\u9fff]/g, ' ').trim() + '*';
   if (ftsQuery === '*') return [];
+  if (ftsQuery.length < 3) return [];
   const stmt = db.prepare(ARTIFACT_SEARCH_SQL);
   const rows = stmt.all(ftsQuery) as Array<{
     id: string;
